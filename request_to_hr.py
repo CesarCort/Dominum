@@ -23,6 +23,7 @@ import kudert # by dominum
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 import shutil
+from cred import credential
 os.getcwd()
 
 #import os, sys
@@ -641,9 +642,11 @@ else:
     os.makedirs('dashboard')
     
 # Manejo de errores en Login
-    
+
+
+
 try:
-    data = login_hiring_room(client_secret="b45c63df9d110c2794db88e5202f54eb",user='rodrigo.alvarez@dominum.pe',password='Mateobenjamin2017')
+    data = login_hiring_room(client_secret=credential.client_secret_hr,user=credential.user_hr,password=credential.pass_hr)
     vacantes = obtener_vacante(token=data['token'])
     pd.set_option('display.max_rows', vacantes.shape[0]+1)
 except:
@@ -719,7 +722,7 @@ while ~(opcion in list(vacantes.index)):
                         if si_no=='y':
                             print('\n# Genial! ya estamos procesando las evaluaciones Kudert  >>'+vacantes.iloc[opcion]['nombre_vacante']+'<< ,esto puede tomar unos minutos, por favor espere...')
                             # AUTH KUDERT
-                            token_kudert = kudert.login_kudert(email='dominumAPI@dominum.pe',password='123456')
+                            token_kudert = kudert.login_kudert(email=credential.user_kudert,password=credential.pass_kudert)
                             #token_kudert['data']['token']
                             token_kudert = token_kudert['data']['token']
                             
