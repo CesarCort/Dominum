@@ -686,16 +686,24 @@ while ~(opcion in list(vacantes.index)):
                 print('| Recuerda: Si tu conexion es lenta es probable que experimentes problemas |')
                 print('----------------------------------------------------------------------------')
                 
-                postulantes = obtener_postulante(token=data['token'],vacante_postulantes=vacantes.iloc[opcion]['idVacante'])
-                df_postulantes_complete = postulantes.merge(vacantes,on=['idVacante']) # merge
-                df_postulantes_complete = procesar(df_postulantes_complete)
-                df_postulantes_complete.to_csv('data/postulantes_complete_dashboard_hr.csv',encoding='utf-8') # save CSV
-                
+                try:
+                    postulantes = obtener_postulante(token=data['token'],vacante_postulantes=vacantes.iloc[opcion]['idVacante'])
+                except:
+                    print('Error con las credenciales de HR')
+                    
+                try:
+                    df_postulantes_complete = postulantes.merge(vacantes,on=['idVacante']) # merge
+                    df_postulantes_complete = procesar(df_postulantes_complete)
+                    df_postulantes_complete.to_csv('data/postulantes_complete_dashboard_hr.csv',encoding='utf-8') # save CSV
+                except:
+                    print('No hay datos a procesar o error de conectividad')
                 # Procesando comentarios
                 print('\n# Ahora procesamos las respuestas de nuestros postulantes, por favor espere...')            
-                df_comentarios_general = request_comentario(token=data['token'],df_idpost_idvac=df_postulantes_complete[['postulanteId','idVacante']])
-                df_comentarios_general.to_csv('data/preguntas_respondidas_db.csv',encoding='utf-8') # save CSV
-                
+                try:
+                    df_comentarios_general = request_comentario(token=data['token'],df_idpost_idvac=df_postulantes_complete[['postulanteId','idVacante']])
+                    df_comentarios_general.to_csv('data/preguntas_respondidas_db.csv',encoding='utf-8') # save CSV
+                except:
+                    print('No hay datos a procesar o error de conectividad')
                 # Procesando EL TRACKING DEL POSTULANTE
                 print('\n# Ahora nos encontramos procesando los datos necesarios para el Funnel de la Vacante, por favor espere...')
                 df_records = obtener_records(token=data['token'],postulantes_id_list=df_postulantes_complete['postulanteId'])
@@ -774,8 +782,12 @@ while ~(opcion in list(vacantes.index)):
                 shutil.rmtree('data')
                 # 
                 print('Se esta descargando su Plantilla en la carpeta "dashboard"')
-                bajar_template_pb(nombre_archivo=str(vacantes.iloc[opcion]['client.compañia'])+'_'+str(vacantes.iloc[opcion]['nombre_vacante']))
-                print('PROCESO EXITOSO! Actualice su Dashboard para finalizar!')
+                try:
+                    bajar_template_pb(nombre_archivo=str(vacantes.iloc[opcion]['client.compañia'])+'_'+str(vacantes.iloc[opcion]['nombre_vacante']))
+                    print('PROCESO EXITOSO! Actualice su Dashboard para finalizar!')
+                    sys.exit()
+                except:
+                    print('Parece que Hubo un error: El template con el nombre del puesto ya existe o hay un error de conectividad')
                 sys.exit()
                 
                 # actualizar_nube = '' # incializando variable
