@@ -623,7 +623,7 @@ def bajar_template_pb(nombre_archivo):
 
 ### SCRIPT CONSOLA | USUARIO
 print('#########################################################')
-print('DASHBOARD HR | Bienvenido al modulo de actualización')
+print('DASHBOARD HR 1.0 | Bienvenido al modulo de actualización')
 print('#########################################################')
 print('\n')
 print('A continuacion \t')
@@ -731,9 +731,7 @@ while ~(opcion in list(vacantes.index)):
                             print('\n# Genial! ya estamos procesando las evaluaciones Kudert  >>'+vacantes.iloc[opcion]['nombre_vacante']+'<< ,esto puede tomar unos minutos, por favor espere...')
                             # AUTH KUDERT
                             token_kudert = kudert.login_kudert(email=credential.user_kudert,password=credential.pass_kudert)
-                            #token_kudert['data']['token']
                             token_kudert = token_kudert['data']['token']
-                            
                             # PRE - PROCESAMIENTO KUDERT
                             filtro_kudert = df_tracking_stages[df_tracking_stages['stage']=='KUDERT']
                             filtro_kudert = df_postulantes_complete[df_postulantes_complete['postulanteId'].isin(filtro_kudert['postulanteId'].to_list())]
@@ -778,7 +776,7 @@ while ~(opcion in list(vacantes.index)):
                 else:None
                 
                 time.sleep(1)
-                # Elimina la carpeta data luego de subirlo a la nube
+                # Elimin a la carpeta data luego de subirlo a la nube
                 shutil.rmtree('data')
                 # 
                 print('Se esta descargando su Plantilla en la carpeta "dashboard"')
@@ -788,7 +786,7 @@ while ~(opcion in list(vacantes.index)):
                     sys.exit()
                 except:
                     print('Parece que Hubo un error: El template con el nombre del puesto ya existe o hay un error de conectividad')
-                sys.exit()
+                    sys.exit()
                 
                 # actualizar_nube = '' # incializando variable
                 # while actualizar_nube!='n' or actualizar_nube!='n': # Bucle de Actualizacion CLOUD
