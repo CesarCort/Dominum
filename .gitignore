@@ -1,6 +1,5 @@
 /editables match
 /Dashboard
-/cred
+/cred/*
+/dominum/*
 /__pycache__
-client_secrets.json
-cred_dominum.txt
