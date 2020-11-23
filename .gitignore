@@ -1,5 +1,6 @@
 /editables match
 /Dashboard
 /cred/*
-/dominum/*
+/cred/__pycache__
+/dominum/__pycache__
 /__pycache__
